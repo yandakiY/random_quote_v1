@@ -5,13 +5,13 @@
 }
 
 body{
-  background-color: blueviolet;
+  /* background-color: blueviolet; */
   color: white;
 }
 
 body , html{
   height: 100vh;
-
+/* font-  */
   display: flex;
   flex-direction: row;
   justify-content: center;

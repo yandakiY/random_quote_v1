@@ -5,11 +5,19 @@ const quoteSlice = createSlice({
     name:'quotes',
     initialState:{
         quotes:[],
+        colors:['#068DA9','#2C3333','#183A1D','#88A47C','#27374D','#482121','#B04759','#394867','#643A6B','#4F200D'],
+        color:'#B04759',
         quote:'',
         quoteAuthor:''
     },
     reducers:{
         setQuotes(state , action){
+
+            // random number color
+            // const rnColor = Math.floor(Math.random() * state.colors.length)
+            // // give a color for background
+            // state.color = state.colors[rnColor]
+
             state.quotes = action.payload
 
             // Random number 
@@ -19,6 +27,8 @@ const quoteSlice = createSlice({
             state.quote = state.quotes[rn].text
             // Author of quote
             state.quoteAuthor = state.quotes[rn].author 
+
+            console.log('background',state.color)
         },
         generateQuote(state , action){
             // Generate a number between 0 and the length of quotes length.
@@ -34,6 +44,12 @@ const quoteSlice = createSlice({
             // quote author
             state.quoteAuthor = state.quotes[randomNumber].author
 
+            // random number color
+            const rnColor = Math.floor(Math.random() * state.colors.length)
+            // give a color for background
+            state.color = state.colors[rnColor]
+
+            console.log('background',state.color)
             // console.log quote 
             // console.log(state.quote)
             // console.log(state.quoteAuthor)

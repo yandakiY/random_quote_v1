@@ -1,3 +1,4 @@
+
 import { useState , useEffect } from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector'
 import { useDispatch } from 'react-redux'
@@ -9,22 +10,33 @@ import '/src/App.css'
 
 function App() {
 
+  // const arrayColor = [
+  //   '#068DA9','#27374D','#482121','#B04759','#643A6B','#4F200D'
+  // ]
+
   const Title = styled.h1`
     color:'white';
-    font-size:55px;
+    font-size:50px;
     text-align:center;
+    line-height:60px;
   `;
 
   const TextQuote = styled.p`
     font-size:25px;
   `
 
+  const TextQuoteAuthor = styled(TextQuote)`
+    font-style:italic;
+    text-align:right;
+    padding-top:20px;
+  `
+
   const BottomPart = styled.div`
     display:flex;
     flex-direction:row;
     justify-content:space-around;
-
-    padding-top:40px;
+    align-items:center;
+    padding-top:15px;
   `
 
   const ButtonGen = styled.button`
@@ -35,6 +47,7 @@ function App() {
     border:none;
     background-color:black;
     cursor:pointer;
+    border-radius:10px;
   `
 
   const WrapperIconShare = styled.div`
@@ -42,8 +55,25 @@ function App() {
     gap:2em;
   `
 
+  const IconShare = styled.i`
+    font-size:40px;
+    cursor:pointer;
+  `
+
+  const IconReload = styled(IconShare)`
+    font-size:35px;
+  `
+
   const WrapperQuote = styled.div`
+    background-color:white;
+    color:blueviolet;
+
+    border-radius:10px;
+
+    ${'' /* box-shadow: black; */}
     padding: 2.5em;
+
+    width:370px;
   `
 
   const [count, setCount] = useState(0)
@@ -79,26 +109,27 @@ function App() {
       <Title>Random Quotes</Title>
       <WrapperQuote id="main">
         <TextQuote id="test-quote">
-          Edit <code>src/App.jsx</code> and save to test HMR
-          Edit <code>src/App.jsx</code> and save to test HMR
+          <i style={{ fontSize: "45px" }} className="icon-quote-left"></i>
+          {quotes.quote === '' ? 'Loading...' : quotes.quote}
+          <TextQuoteAuthor>- {quotes.quoteAuthor === null ? 'Author unknown' : quotes.quoteAuthor}</TextQuoteAuthor>
         </TextQuote>
         
         {/* Part Bottom */}
         <BottomPart id="part-bottom">
           {/* Icon Share Block */}
           <WrapperIconShare id='icon-share'>
-            <ButtonGen onClick={testGen}>
-              Twitter
-            </ButtonGen>
-            <ButtonGen onClick={testGen}>
-              Facebook
-            </ButtonGen>
+            <IconShare className="icon-twitter" onClick={testGen}>
+              {/* Twitter */}
+            </IconShare>
+            <IconShare className="icon-facebook" onClick={testGen}>
+              {/* Facebook */}
+            </IconShare>
           </WrapperIconShare>
           
-          {/* Button New Quote */}
-          <ButtonGen onClick={testGen}>
-            New Quote
-          </ButtonGen>
+          {/* Button New Quote <i class="fa-sharp fa-solid fa-rotate"></i>  */}
+          <IconReload className="fa-sharp fa-solid fa-rotate" onClick={testGen}>
+            {/* New Quote */}
+          </IconReload>
         </BottomPart>
       </WrapperQuote>
     </>
