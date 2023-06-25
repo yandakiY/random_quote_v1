@@ -74,13 +74,19 @@ function App() {
     padding: 2.5em;
 
     width:370px;
+    height:fit-content;
+  `
+
+  const Footer = styled.div`
+    font-size:25px;
+    text-align:center;
+    margin-top:10px;
   `
 
   const [count, setCount] = useState(0)
 
   // use hook useDispatch for execute 
   const dispatch = useDispatch()
-
   const quotes = useSelector(state => state.quotes)
   console.log('Quotes',quotes)
 
@@ -132,6 +138,9 @@ function App() {
           </IconReload>
         </BottomPart>
       </WrapperQuote>
+      <Footer>
+        Made by Yandaki.
+      </Footer>
     </>
   )
 }
