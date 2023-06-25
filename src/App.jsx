@@ -1,20 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState , useEffect } from 'react'
+import { useSelector } from 'react-redux/es/hooks/useSelector'
+import { useDispatch } from 'react-redux'
+import { apiQuote } from './api/quote-api'
+import quoteSlice, { quotesActions } from './store/quoteSlice'
+
 
 function App() {
   const [count, setCount] = useState(0)
 
+  // use hook useDispatch for execute 
+  const dispatch = useDispatch()
+
+  const quotes = useSelector(state => state.quotes)
+  console.log('Quotes',quotes)
+
+  const getQuotes = async () =>{
+    await apiQuote.get()
+      .then((data) =>{
+        dispatch(quotesActions.setQuotes(data.data))
+    })
+  }
+
+  useEffect(() =>{
+    const getQuotesApi = async () =>{
+      await getQuotes()
+    }
+
+    getQuotesApi();
+  } , [])
+  
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+       
       </div>
       <h1>Vite + React</h1>
       <div className="card">
