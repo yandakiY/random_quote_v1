@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
     transition: all ease 1.5s
   }
 
-  #main{
+  #main ,a{
     color:${props => props.bg};
   }
 `

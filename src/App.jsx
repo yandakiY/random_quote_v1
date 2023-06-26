@@ -55,6 +55,10 @@ function App() {
     gap:2em;
   `
 
+  const Link = styled.a`
+    border:none;
+  `
+
   const IconShare = styled.i`
     font-size:40px;
     cursor:pointer;
@@ -124,9 +128,15 @@ function App() {
         <BottomPart id="part-bottom">
           {/* Icon Share Block */}
           <WrapperIconShare id='icon-share'>
-            <IconShare className="icon-twitter" onClick={testGen}>
-              {/* Twitter */}
-            </IconShare>
+            <Link 
+              id="link-twitter"
+              target="_blank"
+              href={`http://twitter.com/intent/tweet/?text="${quotes.quote}" \n\n - ${quotes.quoteAuthor}`} rel="noreferrer"
+            >
+              <IconShare className="icon-twitter">
+                {/* Twitter */}
+              </IconShare>
+            </Link>
             <IconShare className="icon-facebook" onClick={testGen}>
               {/* Facebook */}
             </IconShare>
