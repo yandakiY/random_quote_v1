@@ -6,86 +6,46 @@ import { apiQuote } from './api/quote-api'
 import quoteSlice, { quotesActions } from './store/quoteSlice'
 import styled from 'styled-components'
 import '/src/App.css'
+import axios from 'axios'
+import { BottomPart, Footer, IconReload, IconShare, Link, OptionLanguage, SelectLanguage, TextQuote, TextQuoteAuthor, Title, WrapperIconShare, WrapperLanguage, WrapperQuote } from './styled-components'
+import QuoteDisplay from './components/QuoteDisplay'
+import LanguageChoose from './components/LanguageChoose'
 
+// translate
+  export const translate = async (quote, sourceLanguage = "EN", targetLanguage) =>{
+    const API_URL = 'https://api.mymemory.translated.net/get'
+
+    try{
+      const res = await axios.get(API_URL , {
+        params:{
+          q: quote,
+          langpair: `${sourceLanguage}|${targetLanguage}`,
+        }
+      })
+
+      const translateQuote = res.data.responseData.translatedText
+      console.log(translateQuote)
+      return translateQuote
+    }catch(e){
+      console.error('Error translating text:', e);
+      // console.log(e)
+    }
+  }
 
 function App() {
+  const [chooseSelect , setChooseSelect] = useState(false)
+
+  const lang = [
+    {id:'en' , source:'en' , target:'fr' , value:'ENGLISH'},
+    {id:'fr' , source:'en' , target:'fr' , value:'FRENCH'},
+    // {id:'GER' , value:'GERMANY'},
+  ]
 
   // const arrayColor = [
   //   '#068DA9','#27374D','#482121','#B04759','#643A6B','#4F200D'
   // ]
 
-  const Title = styled.h1`
-    color:'white';
-    font-size:50px;
-    text-align:center;
-    line-height:60px;
-  `;
-
-  const TextQuote = styled.p`
-    font-size:25px;
-  `
-
-  const TextQuoteAuthor = styled(TextQuote)`
-    font-style:italic;
-    text-align:right;
-    padding-top:20px;
-  `
-
-  const BottomPart = styled.div`
-    display:flex;
-    flex-direction:row;
-    justify-content:space-around;
-    align-items:center;
-    padding-top:15px;
-  `
-
-  const ButtonGen = styled.button`
-    color:white;
-    font-size:20px;
-    width:140px;
-    height:40px;
-    border:none;
-    background-color:black;
-    cursor:pointer;
-    border-radius:10px;
-  `
-
-  const WrapperIconShare = styled.div`
-    display:flex;
-    gap:2em;
-  `
-
-  const Link = styled.a`
-    border:none;
-  `
-
-  const IconShare = styled.i`
-    font-size:40px;
-    cursor:pointer;
-  `
-
-  const IconReload = styled(IconShare)`
-    font-size:35px;
-  `
-
-  const WrapperQuote = styled.div`
-    background-color:white;
-    color:blueviolet;
-
-    border-radius:10px;
-
-    ${'' /* box-shadow: black; */}
-    padding: 2.5em;
-
-    width:370px;
-    height:fit-content;
-  `
-
-  const Footer = styled.div`
-    font-size:25px;
-    text-align:center;
-    margin-top:10px;
-  `
+  
 
   const [count, setCount] = useState(0)
 
@@ -94,11 +54,32 @@ function App() {
   const quotes = useSelector(state => state.quotes)
   console.log('Quotes',quotes)
 
+  
+
+  // click on select
+  const clickSelect = () =>{
+    // setChooseSelect(true)
+
+    const selectLanguage = document.querySelector('#select-language')
+
+    if(selectLanguage.value === "en"){
+      return;
+    }
+    dispatch(quotesActions.changeLanguage(selectLanguage.value))
+
+    // change targetLanguage
+    // console.log("selected",selectLanguage.value)
+    // dispatch(quotesActions.setTargetLanguage(selectLanguage.value))
+  }
   // Get array of Quotes
   const getQuotes = async () =>{
     await apiQuote.get()
       .then((data) =>{
-        dispatch(quotesActions.setQuotes(data.data))
+        // if(chooseSelect){
+        //   dispatch(quotesActions.setQuotes(translate(data.data,"en",quotes.targetLanguage)))
+        // }else{
+          dispatch(quotesActions.setQuotes(data.data))
+        // }
       }).catch(err => console.log(err))
   }
 
@@ -116,38 +97,12 @@ function App() {
   
   return (
     <>
+    {/* <img width="48" height="48" src="https://img.icons8.com/fluency/48/france-circular.png" alt="france-circular"/> */}
+      {/* Componenent select language */}
+      <LanguageChoose lang={lang} clickSelect={clickSelect} />
       <Title>Random Quotes</Title>
-      <WrapperQuote id="main">
-        <TextQuote id="test-quote">
-          <i style={{ fontSize: "45px" }} className="icon-quote-left"></i>
-          {quotes.quote === '' ? 'Loading...' : quotes.quote}
-          <TextQuoteAuthor>- {quotes.quoteAuthor === null ? 'Author unknown' : quotes.quoteAuthor}</TextQuoteAuthor>
-        </TextQuote>
-        
-        {/* Part Bottom */}
-        <BottomPart id="part-bottom">
-          {/* Icon Share Block */}
-          <WrapperIconShare id='icon-share'>
-            <Link 
-              id="link-twitter"
-              target="_blank"
-              href={`http://twitter.com/intent/tweet/?text="${quotes.quote}" \n\n - ${quotes.quoteAuthor}`} rel="noreferrer"
-            >
-              <IconShare className="icon-twitter">
-                {/* Twitter */}
-              </IconShare>
-            </Link>
-            <IconShare className="icon-facebook" onClick={testGen}>
-              {/* Facebook */}
-            </IconShare>
-          </WrapperIconShare>
-          
-          {/* Button New Quote <i class="fa-sharp fa-solid fa-rotate"></i>  */}
-          <IconReload className="fa-sharp fa-solid fa-rotate" onClick={testGen}>
-            {/* New Quote */}
-          </IconReload>
-        </BottomPart>
-      </WrapperQuote>
+      {/* Display random  quote via this component */}
+      <QuoteDisplay quotes={quotes} testGen={testGen} />
       <Footer>
         Made by Yandaki.
       </Footer>

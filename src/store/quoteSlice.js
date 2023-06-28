@@ -8,7 +8,10 @@ const quoteSlice = createSlice({
         colors:['#068DA9','#2C3333','#183A1D','#88A47C','#27374D','#482121','#B04759','#394867','#643A6B','#4F200D'],
         color:'#B04759',
         quote:'',
-        quoteAuthor:''
+        quoteAuthor:'',
+        changeLanguage:false,
+        sourceLanguage:'en',
+        targetLanguage:''
     },
     reducers:{
         setQuotes(state , action){
@@ -53,6 +56,11 @@ const quoteSlice = createSlice({
             // console.log quote 
             // console.log(state.quote)
             // console.log(state.quoteAuthor)
+        },
+        changeLanguage(state , action){
+            state.changeLanguage = true
+            console.log("params",action.payload)
+            state.targetLanguage = action.payload
         }
     }
 })
