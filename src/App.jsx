@@ -11,39 +11,63 @@ import { BottomPart, Footer, IconReload, IconShare, Link, OptionLanguage, Select
 import QuoteDisplay from './components/QuoteDisplay'
 import LanguageChoose from './components/LanguageChoose'
 
-// translate
-  export const translate = async (quote, sourceLanguage = "EN", targetLanguage) =>{
-    const API_URL = 'https://api.mymemory.translated.net/get'
+// // translate
+//   const translate = async (quote, sourceLanguage = "EN", targetLanguage) =>{
+//     const API_URL = 'https://api.mymemory.translated.net/get'
 
-    try{
-      const res = await axios.get(API_URL , {
-        params:{
-          q: quote,
-          langpair: `${sourceLanguage}|${targetLanguage}`,
-        }
-      })
+//     try{
+//       const res = await axios.get(API_URL , {
+//         params:{
+//           q: quote,
+//           langpair: `${sourceLanguage}|${targetLanguage}`,
+//         }
+//       })
 
-      const translateQuote = res.data.responseData.translatedText
-      console.log(translateQuote)
-      return translateQuote
-    }catch(e){
-      console.error('Error translating text:', e);
-      // console.log(e)
-    }
-  }
+//       const translateQuote = res.data.responseData.translatedText
+//       console.log(translateQuote)
+//       return translateQuote
+//     }catch(e){
+//       console.error('Error translating text:', e);
+//       // console.log(e)
+//     }
+//   }
 
 function App() {
   const [chooseSelect , setChooseSelect] = useState(false)
 
   const lang = [
-    {id:'en' , source:'en' , target:'fr' , value:'ENGLISH'},
-    {id:'fr' , source:'en' , target:'fr' , value:'FRENCH'},
+    {id:'EN' , source:'en' , target:'fr' , value:'ENGLISH'},
+    {id:'FR' , source:'en' , target:'fr' , value:'FRENCH'},
     // {id:'GER' , value:'GERMANY'},
   ]
 
   // const arrayColor = [
   //   '#068DA9','#27374D','#482121','#B04759','#643A6B','#4F200D'
   // ]
+
+  const translateWithApi = async (quote , sourceLang , targetLang) =>{
+
+      // url API
+      const API_URL = 'https://api.mymemory.translated.net/get';
+
+      // request and response in try ... catch err
+
+      try {
+          // request
+          const res = await axios.get(API_URL , {
+              params:{
+                  q: quote,
+                  langpair: `${sourceLang}|${targetLang}`
+              }
+          })
+          // response
+          const translateRes = res.data.responseData.translatedText
+          return translateRes
+      } catch (error) {
+          console.error("Error causing : ",error)
+          return null;
+      }
+  }
 
   
 
@@ -56,21 +80,22 @@ function App() {
 
   
 
-  // click on select
-  const clickSelect = () =>{
-    // setChooseSelect(true)
+  // // click on select
+  // const clickSelect = () =>{
+  //   // setChooseSelect(true)
 
-    const selectLanguage = document.querySelector('#select-language')
+  //   const selectLanguage = document.querySelector('#select-language')
 
-    if(selectLanguage.value === "en"){
-      return;
-    }
-    dispatch(quotesActions.changeLanguage(selectLanguage.value))
+  //   if(selectLanguage.value === "EN"){
+  //     dispatch(quotesActions.denyChangeLanguage())
+  //   }else{
+  //     dispatch(quotesActions.changeLanguage(selectLanguage.value))
+  //   }
 
-    // change targetLanguage
-    // console.log("selected",selectLanguage.value)
-    // dispatch(quotesActions.setTargetLanguage(selectLanguage.value))
-  }
+  //   // change targetLanguage
+  //   // console.log("selected",selectLanguage.value)
+  //   // dispatch(quotesActions.setTargetLanguage(selectLanguage.value))
+  // }
   // Get array of Quotes
   const getQuotes = async () =>{
     await apiQuote.get()
@@ -99,10 +124,10 @@ function App() {
     <>
     {/* <img width="48" height="48" src="https://img.icons8.com/fluency/48/france-circular.png" alt="france-circular"/> */}
       {/* Componenent select language */}
-      <LanguageChoose lang={lang} clickSelect={clickSelect} />
+      <LanguageChoose lang={lang} />
       <Title>Random Quotes</Title>
       {/* Display random  quote via this component */}
-      <QuoteDisplay quotes={quotes} testGen={testGen} />
+      <QuoteDisplay quotes={quotes} testGen={testGen} translateWithApi={translateWithApi} />
       <Footer>
         Made by Yandaki.
       </Footer>

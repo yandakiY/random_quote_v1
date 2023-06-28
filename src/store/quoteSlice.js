@@ -10,7 +10,7 @@ const quoteSlice = createSlice({
         quote:'',
         quoteAuthor:'',
         changeLanguage:false,
-        sourceLanguage:'en',
+        sourceLanguage:'EN',
         targetLanguage:''
     },
     reducers:{
@@ -32,6 +32,9 @@ const quoteSlice = createSlice({
             state.quoteAuthor = state.quotes[rn].author 
 
             console.log('background',state.color)
+        },
+        setQuote(state , action){
+            state.quote = action.payload
         },
         generateQuote(state , action){
             // Generate a number between 0 and the length of quotes length.
@@ -61,6 +64,11 @@ const quoteSlice = createSlice({
             state.changeLanguage = true
             console.log("params",action.payload)
             state.targetLanguage = action.payload
+        },
+        denyChangeLanguage(state , action){
+            state.changeLanguage = false;
+
+            // return state.changeLanguage;
         }
     }
 })
