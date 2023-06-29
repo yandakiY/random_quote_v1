@@ -8,6 +8,7 @@ const quoteSlice = createSlice({
         colors:['#068DA9','#2C3333','#183A1D','#88A47C','#27374D','#482121','#B04759','#394867','#643A6B','#4F200D'],
         color:'#B04759',
         quote:'',
+        quoteOrigin:'',
         quoteAuthor:'',
         changeLanguage:false,
         sourceLanguage:'EN',
@@ -28,6 +29,7 @@ const quoteSlice = createSlice({
 
             // Quote 
             state.quote = state.quotes[rn].text
+            state.quoteOrigin = state.quotes[rn].text
             // Author of quote
             state.quoteAuthor = state.quotes[rn].author 
 
@@ -35,6 +37,7 @@ const quoteSlice = createSlice({
         },
         setQuote(state , action){
             state.quote = action.payload
+            // state.quoteOrigin = action.payload
         },
         generateQuote(state , action){
             // Generate a number between 0 and the length of quotes length.
@@ -47,6 +50,8 @@ const quoteSlice = createSlice({
 
             // quote
             state.quote = state.quotes[randomNumber].text
+            // quote origin
+            state.quoteOrigin = state.quotes[randomNumber].text
             // quote author
             state.quoteAuthor = state.quotes[randomNumber].author
 

@@ -10,13 +10,19 @@ const QuoteDisplay = ({quotes , testGen , translateWithApi}) => {
     // dispatch function
     const dispatch = useDispatch()
 
+    // To translate in french
     let textQuote = quotes.quote
+    // For output in english
     let textQuote1 = quotes.quote
     // const [quoteToDisplay , setquoteToDisplay] = useState(quotes.quote)
 
-    // get state changeLanguage
+    // get quotes origin
+    let quoteOrigin = useSelector(state => state.quotes.quoteOrigin)
+    // get state changeLanguage (true or false)
     const changeLanguage = useSelector(state => state.quotes.changeLanguage)
+    // Always 'EN'
     const sourceLanguage = useSelector(state => state.quotes.sourceLanguage)
+    // 'FR' or 'EN'
     const targetLanguage = useSelector(state => state.quotes.targetLanguage)
 
     // 
@@ -28,9 +34,11 @@ const QuoteDisplay = ({quotes , testGen , translateWithApi}) => {
             translateWithApi(textQuote , sourceLanguage , targetLanguage).then(e => {
                     console.log('use trad...')
                     if(e !== 'PLEASE SELECT TWO DISTINCT LANGUAGES'){
+                        console.log('trad',e)
                         dispatch(quotesActions.setQuote(e))
                     }else{
-                        dispatch(quotesActions.setQuote(textQuote1))
+                        console.log('origin', quoteOrigin)
+                        dispatch(quotesActions.setQuote(quoteOrigin))
                     }
                 }
             )
